@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#171d36">
+<title>CampusFind | Lost & Found Portal</title>
+<style>
+:root{--primary:#635bff;--primary-dark:#5148df;--teal:#13c4a3;--ink:#1d2540;--muted:#737d98;--bg:#f4f6fb;--card:#fff;--line:#e5e8f1;--danger:#d94862;--shadow:0 12px 32px #24305012}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,Segoe UI,Arial,sans-serif}
+header{position:sticky;top:0;z-index:20;background:#171d36;color:white;box-shadow:0 5px 20px #0002}
+.nav{max-width:1200px;margin:auto;padding:13px 20px;display:flex;align-items:center;justify-content:space-between;gap:18px}
+.brand{display:flex;align-items:center;gap:10px;font-size:21px;font-weight:850;letter-spacing:.2px}.logo{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(135deg,#7c73ff,#13c4a3);font-size:20px}
+nav{display:flex;gap:5px;flex-wrap:wrap}nav a{color:#d8dcf0;text-decoration:none;padding:9px 11px;border-radius:9px;font-size:13px;font-weight:700}nav a:hover{background:#ffffff18;color:white}
+main{max-width:1200px;margin:auto;padding:28px 20px 60px}.hero{display:flex;justify-content:space-between;align-items:center;gap:24px;padding:28px 30px;border-radius:22px;color:white;background:linear-gradient(120deg,#252d58,#5148bd 68%,#13a990);box-shadow:var(--shadow)}
+.hero h1{font-size:clamp(26px,4vw,39px);margin:0 0 9px}.hero p{margin:0;color:#e7e9ff;line-height:1.6;max-width:650px}.hero-actions{display:flex;gap:10px;flex-wrap:wrap}
+.btn{border:0;border-radius:10px;padding:11px 15px;font:700 14px inherit;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:7px;text-decoration:none;transition:.18s}
+.btn:hover{transform:translateY(-1px);filter:brightness(.98)}.primary{background:var(--primary);color:white}.white{background:white;color:#343b6b}.soft{background:#eeedff;color:var(--primary)}.teal{background:#e3fbf5;color:#07866c}.danger{background:#ffe9ed;color:#b72f4a}.dark{background:#263052;color:white}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:18px 0}.stat,.panel,.item{background:var(--card);border:1px solid var(--line);border-radius:17px;padding:19px;box-shadow:var(--shadow)}
+.stat small{color:var(--muted);font-weight:650}.stat strong{display:block;font-size:30px;margin:8px 0 3px}.stat span{font-size:12px;color:var(--muted)}
+.columns{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0}.panel h2,.panel h3{margin:0 0 13px}.panel p{color:var(--muted);line-height:1.6;margin:7px 0}
+.section-head{display:flex;align-items:end;justify-content:space-between;gap:12px;margin:28px 0 12px}.section-head h2{margin:0;font-size:22px}.section-head p{margin:5px 0 0;color:var(--muted);font-size:13px}
+.forms{display:grid;grid-template-columns:1fr 1fr;gap:16px}.form-grid{display:grid;gap:11px}.field label{display:block;font-size:12px;font-weight:800;color:#4b5575;margin:0 0 6px}.field input,.field select,.field textarea,.filters input,.filters select{width:100%;padding:11px 12px;border:1px solid #dce1ed;border-radius:10px;background:#fbfcff;color:var(--ink);font:14px inherit;outline:none}.field input:focus,.field select:focus,.field textarea:focus,.filters input:focus,.filters select:focus{border-color:var(--primary);box-shadow:0 0 0 3px #635bff18}.field textarea{min-height:88px;resize:vertical}.hint{font-size:11px;color:var(--muted);margin-top:5px}.preview{display:none;margin-top:8px;max-width:100%;max-height:180px;object-fit:contain;border:1px solid var(--line);border-radius:12px;padding:4px;background:#fafbff}
+.filters{display:grid;grid-template-columns:2fr 1fr 1fr;gap:10px;margin:14px 0}.items{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.item{padding:0;overflow:hidden;display:flex;flex-direction:column}.item-image{height:165px;background:#eef1fa;display:grid;place-items:center;color:#8a93ad;font-size:38px;overflow:hidden}.item-image img{width:100%;height:100%;object-fit:cover}.item-content{padding:16px;display:flex;flex-direction:column;gap:8px;flex:1}.badges{display:flex;gap:6px;flex-wrap:wrap}.badge{font-size:10px;font-weight:850;padding:5px 8px;border-radius:30px;background:#eeedff;color:#5148d5}.badge.found{background:#e3fbf5;color:#07866c}.badge.resolved{background:#edf0f5;color:#59627a}.item h3{font-size:17px;margin:2px 0}.meta{font-size:12px;color:var(--muted);line-height:1.5}.desc{font-size:13px;color:#56617b;line-height:1.5;flex:1}.item-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:5px}.item-actions .btn{font-size:12px;padding:9px 10px}.empty{grid-column:1/-1;text-align:center;padding:35px 15px;color:var(--muted);background:white;border:1px dashed #cfd5e5;border-radius:15px}
+footer{text-align:center;color:var(--muted);font-size:12px;padding:24px}
+.modal{display:none;position:fixed;inset:0;background:#10162acc;z-index:50;padding:18px;overflow:auto;align-items:center;justify-content:center}.modal.open{display:flex}.dialog{background:white;border-radius:18px;width:min(560px,100%);padding:22px;box-shadow:0 25px 80px #0004;max-height:90vh;overflow:auto}.dialog-head{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:14px}.dialog-head h2{margin:0;font-size:20px}.close{border:0;background:#eef1f7;border-radius:9px;width:34px;height:34px;font-size:20px;cursor:pointer}.detail-image{width:100%;max-height:260px;object-fit:contain;background:#f3f5fa;border-radius:12px;margin-bottom:12px}.notice{display:none;padding:11px 13px;border-radius:10px;background:#e3fbf5;color:#08765f;font-size:13px;margin-bottom:12px}.notice.show{display:block}.contact-box{padding:12px;background:#f5f6fb;border-radius:12px;margin-top:12px;font-size:13px;color:#56617b;line-height:1.5}
+@media(max-width:850px){.stats{grid-template-columns:repeat(2,1fr)}.items{grid-template-columns:repeat(2,1fr)}.hero{align-items:flex-start;flex-direction:column}}
+@media(max-width:620px){.nav{align-items:flex-start;flex-direction:column}.nav nav{width:100%}main{padding:18px 13px 45px}.hero{padding:22px 19px}.stats,.columns,.forms,.items{grid-template-columns:1fr}.filters{grid-template-columns:1fr}.section-head{align-items:flex-start;flex-direction:column}.stat{padding:15px}.stat strong{font-size:26px}}
+</style>
+</head>
+<body>
+<header><div class="nav">
+  <div class="brand"><span class="logo">🔎</span> CampusFind</div>
+  <nav><a href="#dashboard">Dashboard</a><a href="#report">Report Item</a><a href="#search">Search</a><a href="#about">About</a></nav>
+</div></header>
+<main id="dashboard">
+<section class="hero">
+  <div><h1>Campus Lost &amp; Found</h1><p>Lost something on campus? Found something that belongs to someone else? Report it, search listings and help return belongings to their owners.</p></div>
+  <div class="hero-actions"><a class="btn white" href="#report">＋ Report an Item</a><a class="btn" style="background:#ffffff22;color:white;border:1px solid #ffffff55" href="#search">⌕ Find an Item</a></div>
+</section>
+<section class="stats" aria-label="Portal statistics">
+  <div class="stat"><small>Active Lost Reports</small><strong id="lostCount">0</strong><span>Items reported lost</span></div>
+  <div class="stat"><small>Active Found Reports</small><strong id="foundCount">0</strong><span>Items reported found</span></div>
+  <div class="stat"><small>Resolved Items</small><strong id="resolvedCount">0</strong><span>Cases marked resolved</span></div>
+  <div class="stat"><small>Total Listings</small><strong id="totalCount">0</strong><span>All saved records</span></div>
+</section>
+<section class="columns">
+  <div class="panel"><h3>How it works</h3><p>1. Submit a lost or found item with its details.</p><p>2. Add a photo to help others identify the item.</p><p>3. Search and filter the listings to find a match.</p><p>4. Open the details and send a contact/request message.</p><p>5. Mark the listing as resolved when the case is complete.</p></div>
+  <div class="panel"><h3>Recent Activity</h3><div id="activity" class="meta">No reports yet. Add the first listing below.</div></div>
+</section>
+<div class="section-head" id="report"><div><h2>Report an Item</h2><p>Enter accurate details. Image upload is optional.</p></div></div>
+<div id="notice" class="notice" role="status"></div>
+<section class="forms">
+  <div class="panel"><h3>📌 Report Lost Item</h3>
+    <form id="lostForm" class="form-grid">
+      <input type="hidden" name="type" value="Lost">
+      <div class="field"><label>Item Name *</label><input name="name" required maxlength="70" placeholder="e.g. Black wallet"></div>
+      <div class="field"><label>Category *</label><select name="category" required><option value="">Select category</option><option>Electronics</option><option>Books</option><option>ID Card</option><option>Bag</option><option>Keys</option><option>Water Bottle</option><option>Other</option></select></div>
+      <div class="field"><label>Last Seen Location *</label><input name="location" required maxlength="100" placeholder="e.g. College library"></div>
+      <div class="field"><label>Date Lost *</label><input name="date" type="date" required></div>
+      <div class="field"><label>Description *</label><textarea name="description" required maxlength="500" placeholder="Describe colour, brand or identifying details..."></textarea></div>
+      <div class="field"><label>Item Photo (optional)</label><input name="photo" type="file" accept="image/*" data-preview="lostPreview"><img id="lostPreview" class="preview" alt="Lost item image preview"><div class="hint">Choose an image to preview it before saving.</div></div>
+      <button class="btn primary" type="submit">Submit Lost Report</button>
+    </form>
+  </div>
+  <div class="panel"><h3>🎒 Report Found Item</h3>
+    <form id="foundForm" class="form-grid">
+      <input type="hidden" name="type" value="Found">
+      <div class="field"><label>Item Name *</label><input name="name" required maxlength="70" placeholder="e.g. Blue water bottle"></div>
+      <div class="field"><label>Category *</label><select name="category" required><option value="">Select category</option><option>Electronics</option><option>Books</option><option>ID Card</option><option>Bag</option><option>Keys</option><option>Water Bottle</option><option>Other</option></select></div>
+      <div class="field"><label>Found Location *</label><input name="location" required maxlength="100" placeholder="e.g. Main bus stop"></div>
+      <div class="field"><label>Date Found *</label><input name="date" type="date" required></div>
+      <div class="field"><label>Description *</label><textarea name="description" required maxlength="500" placeholder="Describe the item and where it was found..."></textarea></div>
+      <div class="field"><label>Item Photo (optional)</label><input name="photo" type="file" accept="image/*" data-preview="foundPreview"><img id="foundPreview" class="preview" alt="Found item image preview"><div class="hint">Choose an image to preview it before saving.</div></div>
+      <button class="btn primary" type="submit">Submit Found Report</button>
+    </form>
+  </div>
+</section>
+<div class="section-head" id="search"><div><h2>Search &amp; Filter Items</h2><p>Search by item name, location, description or category.</p></div></div>
+<section class="panel">
+  <div class="filters">
+    <input id="searchInput" type="search" placeholder="Search item, location or description..." aria-label="Search listings">
+    <select id="categoryFilter" aria-label="Filter by category"><option value="">All Categories</option><option>Electronics</option><option>Books</option><option>ID Card</option><option>Bag</option><option>Keys</option><option>Water Bottle</option><option>Other</option></select>
+    <select id="statusFilter" aria-label="Filter by status"><option value="">All Statuses</option><option value="Active">Active</option><option value="Resolved">Resolved</option><option value="Lost">Lost Items</option><option value="Found">Found Items</option></select>
+  </div>
+  <div id="items" class="items"><div class="empty">No listings yet. Submit a lost or found item to get started.</div></div>
+</section>
+<section class="panel" id="about" style="margin-top:18px"><h3>About CampusFind</h3><p>CampusFind is a campus Lost &amp; Found portal designed to make reporting, discovering and returning belongings easier. It supports item details, image preview, search, category and status filters, detailed listings, contact/request messages, and active or resolved records.</p><p><b>Student Project:</b> HARISH S · BCA · Government Thirumagal Mills College</p><p class="hint">Storage note: This standalone version saves records in this browser's Local Storage. Data stays on this device/browser and is not automatically shared with other users or devices.</p></section>
+</main>
+<footer>© 2026 CampusFind · Lost &amp; Found Portal</footer>
+
+<div class="modal" id="detailModal" role="dialog" aria-modal="true" aria-labelledby="detailTitle">
+ <div class="dialog"><div class="dialog-head"><h2 id="detailTitle">Item Details</h2><button class="close" data-close="detailModal" aria-label="Close">×</button></div><div id="detailBody"></div></div>
+</div>
+<div class="modal" id="requestModal" role="dialog" aria-modal="true" aria-labelledby="requestTitle">
+ <div class="dialog"><div class="dialog-head"><h2 id="requestTitle">Contact / Request</h2><button class="close" data-close="requestModal" aria-label="Close">×</button></div>
+  <form id="requestForm" class="form-grid"><input type="hidden" name="itemId"><div class="field"><label>Your Name *</label><input name="requester" required maxlength="70" placeholder="Enter your name"></div><div class="field"><label>Email or Contact *</label><input name="contact" required maxlength="100" placeholder="Enter an email or phone number"></div><div class="field"><label>Message *</label><textarea name="message" required maxlength="500" placeholder="Explain why you are contacting about this item..."></textarea></div><button class="btn primary" type="submit">Save Request</button><p class="hint">This request is saved locally in this browser for demonstration. It is not sent to the item owner.</p></form>
+ </div>
+</div>
+<script>
+const STORAGE_KEY = "campusfind_records_v1";
+const REQUEST_KEY = "campusfind_requests_v1";
+let records = loadRecords();
+let requests = loadRequests();
+let pendingPhotos = {lost:null, found:null};
+
+function loadRecords(){try{return JSON.parse(localStorage.getItem(STORAGE_KEY)||"[]")}catch{return []}}
+function loadRequests(){try{return JSON.parse(localStorage.getItem(REQUEST_KEY)||"[]")}catch{return []}}
+function saveAll(){localStorage.setItem(STORAGE_KEY,JSON.stringify(records));localStorage.setItem(REQUEST_KEY,JSON.stringify(requests))}
+function esc(value){return String(value??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function showNotice(message){const el=document.getElementById("notice");el.textContent=message;el.classList.add("show");setTimeout(()=>el.classList.remove("show"),3500)}
+function id(){return "item_"+Date.now()+"_"+Math.random().toString(36).slice(2,8)}
+function formatDate(d){if(!d)return "—";const [y,m,day]=d.split("-");return `${day}-${m}-${y}`}
+document.querySelectorAll('input[type="file"][data-preview]').forEach(input=>{
+ input.addEventListener("change",()=>{
+  const key=input.dataset.preview==="lostPreview"?"lost":"found",file=input.files[0],img=document.getElementById(input.dataset.preview);
+  pendingPhotos[key]=null;img.removeAttribute("src");img.style.display="none";
+  if(!file)return;
+  if(!file.type.startsWith("image/")){showNotice("Please choose a valid image file.");input.value="";return}
+  if(file.size>2*1024*1024){showNotice("Please choose an image smaller than 2 MB.");input.value="";return}
+  const reader=new FileReader();reader.onload=()=>{pendingPhotos[key]=reader.result;img.src=reader.result;img.style.display="block"};reader.readAsDataURL(file);
+ });
+});
+function submitReport(form){
+ const fd=new FormData(form),type=fd.get("type"),key=type.toLowerCase();
+ const record={id:id(),type,name:fd.get("name").trim(),category:fd.get("category"),location:fd.get("location").trim(),date:fd.get("date"),description:fd.get("description").trim(),photo:pendingPhotos[key]||"",status:"Active",createdAt:new Date().toISOString()};
+ records.unshift(record);saveAll();form.reset();pendingPhotos[key]=null;
+ const preview=document.getElementById(key+"Preview");preview.removeAttribute("src");preview.style.display="none";
+ render();showNotice(type+" item report saved successfully.");document.getElementById("search").scrollIntoView({behavior:"smooth"});
+}
+document.getElementById("lostForm").addEventListener("submit",e=>{e.preventDefault();submitReport(e.target)});
+document.getElementById("foundForm").addEventListener("submit",e=>{e.preventDefault();submitReport(e.target)});
+function render(){
+ const lost=records.filter(x=>x.type==="Lost"&&x.status==="Active").length,found=records.filter(x=>x.type==="Found"&&x.status==="Active").length,resolved=records.filter(x=>x.status==="Resolved").length;
+ document.getElementById("lostCount").textContent=lost;document.getElementById("foundCount").textContent=found;document.getElementById("resolvedCount").textContent=resolved;document.getElementById("totalCount").textContent=records.length;
+ document.getElementById("activity").innerHTML=records.length?records.slice(0,4).map(x=>`<p>• <b>${esc(x.name)}</b> — ${esc(x.type)} · ${esc(x.location)} <span class="meta">(${esc(x.status)})</span></p>`).join(""):"No reports yet. Add the first listing below.";
+ const term=document.getElementById("searchInput").value.trim().toLowerCase(),cat=document.getElementById("categoryFilter").value,status=document.getElementById("statusFilter").value;
+ const filtered=records.filter(x=>{
+  const matches=[x.name,x.location,x.description,x.category,x.type].join(" ").toLowerCase().includes(term);
+  const categoryOk=!cat||x.category===cat;
+  const statusOk=!status||(status==="Active"||status==="Resolved"?x.status===status:x.type===status);
+  return matches&&categoryOk&&statusOk;
+ });
+ const root=document.getElementById("items");
+ if(!filtered.length){root.innerHTML='<div class="empty">No matching items found. Try another search or filter.</div>';return}
+ root.innerHTML=filtered.map(x=>`<article class="item">
+  <div class="item-image">${x.photo?`<img src="${x.photo}" alt="${esc(x.name)}">`:"📦"}</div>
+  <div class="item-content"><div class="badges"><span class="badge ${x.type==="Found"?"found":""}">${esc(x.type)} Item</span><span class="badge ${x.status==="Resolved"?"resolved":""}">${esc(x.status)}</span></div>
+  <h3>${esc(x.name)}</h3><div class="meta"><b>Category:</b> ${esc(x.category)}<br><b>Location:</b> ${esc(x.location)}<br><b>Date:</b> ${formatDate(x.date)}</div>
+  <div class="desc">${esc(x.description.length>105?x.description.slice(0,105)+"…":x.description)}</div>
+  <div class="item-actions"><button class="btn soft" onclick="viewDetails('${x.id}')">View Details</button>${x.status==="Active"?`<button class="btn teal" onclick="openRequest('${x.id}')">Contact / Request</button>`:`<button class="btn dark" disabled>Resolved</button>`}
+  <button class="btn ${x.status==="Active"?"danger":"soft"}" onclick="toggleResolved('${x.id}')">${x.status==="Active"?"Mark Resolved":"Reopen"}</button></div></div></article>`).join("");
+}
+function findRecord(itemId){return records.find(x=>x.id===itemId)}
+function viewDetails(itemId){
+ const x=findRecord(itemId);if(!x)return;
+ document.getElementById("detailTitle").textContent=x.name;
+ document.getElementById("detailBody").innerHTML=`${x.photo?`<img class="detail-image" src="${x.photo}" alt="${esc(x.name)}">`:""}
+ <div class="badges"><span class="badge ${x.type==="Found"?"found":""}">${esc(x.type)} Item</span><span class="badge ${x.status==="Resolved"?"resolved":""}">${esc(x.status)}</span></div>
+ <p><b>Category:</b> ${esc(x.category)}</p><p><b>Location:</b> ${esc(x.location)}</p><p><b>Date:</b> ${formatDate(x.date)}</p><p><b>Description:</b><br>${esc(x.description)}</p>
+ <div class="contact-box">Use the Contact / Request button on the listing to save a follow-up request. Requests in this standalone version remain in this browser.</div>
+ <div class="item-actions" style="margin-top:14px">${x.status==="Active"?`<button class="btn teal" onclick="closeModal('detailModal');openRequest('${x.id}')">Contact / Request</button>`:""}<button class="btn ${x.status==="Active"?"danger":"soft"}" onclick="toggleResolved('${x.id}');closeModal('detailModal')">${x.status==="Active"?"Mark as Resolved":"Reopen Listing"}</button></div>`;
+ openModal("detailModal");
+}
+function toggleResolved(itemId){const x=findRecord(itemId);if(!x)return;x.status=x.status==="Active"?"Resolved":"Active";saveAll();render();showNotice(x.name+" is now "+x.status.toLowerCase()+".")}
+function openRequest(itemId){document.querySelector('#requestForm [name="itemId"]').value=itemId;openModal("requestModal")}
+document.getElementById("requestForm").addEventListener("submit",e=>{
+ e.preventDefault();const fd=new FormData(e.target);
+ requests.unshift({id:"req_"+Date.now(),itemId:fd.get("itemId"),requester:fd.get("requester").trim(),contact:fd.get("contact").trim(),message:fd.get("message").trim(),createdAt:new Date().toISOString()});
+ saveAll();e.target.reset();closeModal("requestModal");showNotice("Your request has been saved in this browser.");
+});
+function openModal(id){document.getElementById(id).classList.add("open")}
+function closeModal(id){document.getElementById(id).classList.remove("open")}
+document.querySelectorAll("[data-close]").forEach(b=>b.addEventListener("click",()=>closeModal(b.dataset.close)));
+document.querySelectorAll(".modal").forEach(m=>m.addEventListener("click",e=>{if(e.target===m)m.classList.remove("open")}));
+document.addEventListener("keydown",e=>{if(e.key==="Escape")document.querySelectorAll(".modal.open").forEach(m=>m.classList.remove("open"))});
+["searchInput","categoryFilter","statusFilter"].forEach(id=>document.getElementById(id).addEventListener(id==="searchInput"?"input":"change",render));
+render();
+</script>
+</body></html>
